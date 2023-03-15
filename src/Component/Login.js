@@ -1,98 +1,69 @@
-import React from 'react'
+import React, { useState } from 'react'
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom/dist';
 
 const Login = () => {
+  const [emailData, SetemailData] = useState('');
+  const [passData, SetpassData] = useState('');
+  let navigate = useNavigate();
+  const routeChange = () => { navigate('/home'); }
+
+  function passOnchange(e) { SetpassData(e.target.value); }
+  function emailOnchange(e) { SetemailData(e.target.value); }
+
+  function CheckLogin() {
+  localStorage.setItem('userName', 'Guest');
+      axios.get('https://localhost:44318/User/CheckLogin', {
+          params: {
+              emailAddress: emailData,
+              password: passData
+          }
+      })
+          .then(function (response) {
+              console.log(response.data);
+              if (response.data.userId > 0) {
+                  localStorage.setItem('userName', response.data.firstName);
+                  alert('0');
+                  routeChange();
+              } else {
+                  localStorage.setItem('userName', 'Guest');
+                  alert('Please check the email and password');
+              }
+          })
+          .catch(function (error) {
+              localStorage.setItem('userName', 'Guest');
+              alert(error);
+          })
+          .finally(function () {
+              // always executed
+          });
+  }
+
   return (
     
-  <div>
-    <ul class="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
-      <li class="nav-item" role="presentation">
-        <a class="nav-link active" id="tab-login" data-mdb-toggle="pill" href="#pills-login" role="tab"
-          aria-controls="pills-login" aria-selected="true">Login</a>
-      </li>
-      <li class="nav-item" role="presentation">
-        <a class="nav-link" id="tab-register" data-mdb-toggle="pill" href="#pills-register" role="tab"
-          aria-controls="pills-register" aria-selected="false">Register</a>
-      </li>
-    </ul>
-    
-    <div class="tab-content">
-      <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
-        <form>
-          <div class="text-center mb-3">
-            <p>Sign in with:</p>
-            <button type="button" class="btn btn-link btn-floating mx-1">
-              <i class="fab fa-facebook-f"></i>
-            </button>
-    
-            <button type="button" class="btn btn-link btn-floating mx-1">
-              <i class="fab fa-google"></i>
-            </button>
-    
-            <button type="button" class="btn btn-link btn-floating mx-1">
-              <i class="fab fa-twitter"></i>
-            </button>
-    
-            <button type="button" class="btn btn-link btn-floating mx-1">
-              <i class="fab fa-github"></i>
-            </button>
-          </div>
-    
-          <p class="text-center">or:</p>
-    
-          <div class="form-outline mb-4">
-            <input type="email" id="loginName" class="form-control" />
-            <label class="form-label" for="loginName">Email or username</label>
-          </div>
-    
-          <div class="form-outline mb-4">
-            <input type="password" id="loginPassword" class="form-control" />
-            <label class="form-label" for="loginPassword">Password</label>
-          </div>
-    
-          <div class="row mb-4">
-            <div class="col-md-6 d-flex justify-content-center">
-              <div class="form-check mb-3 mb-md-0">
-                <input class="form-check-input" type="checkbox" value="" id="loginCheck" checked />
-                <label class="form-check-label" for="loginCheck"> Remember me </label>
-              </div>
-            </div>
-    
-            <div class="col-md-6 d-flex justify-content-center">
-              <a href="#!">Forgot password?</a>
-            </div>
-          </div>
-    
-          <button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
-    
-          <div class="text-center">
-            <p>Not a member? <a href="#!">Register</a></p>
-          </div>
-        </form>
-      </div>
-      <div class="tab-pane fade" id="pills-register" role="tabpanel" aria-labelledby="tab-register">
-        <form>
-          <div class="text-center mb-3">
-            <p>Sign up with:</p>
-            <button type="button" class="btn btn-link btn-floating mx-1">
-              <i class="fab fa-facebook-f"></i>
-            </button>
-    
-            <button type="button" class="btn btn-link btn-floating mx-1">
-              <i class="fab fa-google"></i>
-            </button>
-    
-            <button type="button" class="btn btn-link btn-floating mx-1">
-              <i class="fab fa-twitter"></i>
-            </button>
-    
-            <button type="button" class="btn btn-link btn-floating mx-1">
-              <i class="fab fa-github"></i>
-            </button>
-          </div>
-    
-         </form>
-      </div>
-    </div>
+    <div className='container'>
+    <Form>
+      <Form.Group className="mb-3" controlId="formBasicEmail">
+        <Form.Label>Email address</Form.Label>
+        <Form.Control onChange={emailOnchange} type="email" placeholder="Enter email" />
+        <Form.Text  className="text-muted">
+          We'll never share your email with anyone else.
+        </Form.Text>
+      </Form.Group>
+
+      <Form.Group className="mb-3" controlId="formBasicPassword">
+        <Form.Label>Password</Form.Label>
+        <Form.Control onChange={passOnchange} type="password" placeholder="Password" />
+      </Form.Group>
+      <Form.Group className="mb-3" controlId="formBasicCheckbox">
+        <Form.Check type="checkbox" label="Check me out" />
+      </Form.Group>
+      <Button onClick={CheckLogin} variant="primary" type="submit">
+        Submit
+      </Button >
+    </Form>
     </div>
 
   )
