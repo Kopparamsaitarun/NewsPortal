@@ -3,12 +3,12 @@ function Home() {
   let coursellist = [
     {
       id: "1",
-      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTu-OuGkNrCKFF9VZ7oQVVMLHyBl-d-uVQRig&usqp=CAU",
+      image: "https://7knetwork.com/wp-content/uploads/2021/05/p12.jpg",
       dec: "image 1",
     },
     {
       id: "2",
-      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ87UJ6EQ3yvQooA4DtUX_BucAsFc-nlKdsoA&usqp=CAU",
+      image: "https://thumbs.dreamstime.com/b/news-newspapers-folded-stacked-word-wooden-block-puzzle-dice-concept-newspaper-media-press-release-42301371.jpg",
 
       dec: "image 2",
     },
